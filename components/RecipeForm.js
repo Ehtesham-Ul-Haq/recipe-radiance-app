@@ -17,20 +17,7 @@ const RecipeForm = ({ initialRecipe = {} }) => {
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const recipeData = { name, description, category, ingredients, instructions };
-  //     if (initialRecipe._id) {
-  //       await axios.put(`/api/recipes/${initialRecipe._id}`, recipeData);
-  //     } else {
-  //       await axios.post('/api/recipes/add', recipeData);
-  //     }
-  //     // Redirect or show success message
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+ 
 
   const handleIngredientChange = (index, value) => {
     const newIngredients = [...ingredients];
@@ -74,20 +61,43 @@ const RecipeForm = ({ initialRecipe = {} }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (validateForm()) {
       console.log('Recipe submitted successfully');
       setLoading(true);
+      
       try {
-        const recipeData = { image, name, description, category, ingredients, instructions };
+        const recipeData = {
+          image, 
+          name, 
+          description, 
+          category, 
+          ingredients, 
+          instructions
+        };
+  
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
+  
+        // Set up the config for headers, including Authorization
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+            'Content-Type': 'application/json'
+          }
+        };
+  
         if (initialRecipe._id) {
-          await axios.put(`/api/recipes/${initialRecipe._id}`, recipeData);
+          await axios.put(`/api/recipes/${initialRecipe._id}`, recipeData, config);
           console.log('Recipe updated successfully');
         } else {
-          await axios.post('/api/recipes/add', recipeData);
+          await axios.post('/api/recipes/add', recipeData, config);
           console.log('Recipe added successfully');
         }
+  
         // Redirect or show success message
         router.push('/');
+        
       } catch (error) {
         console.error(error);
         setError('Failed to submit recipe');
@@ -96,6 +106,7 @@ const RecipeForm = ({ initialRecipe = {} }) => {
       }
     }
   };
+  
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">

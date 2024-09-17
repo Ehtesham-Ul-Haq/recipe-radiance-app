@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import UserProfile from '../../components/UserProfile';
+import UserProfile from '@/components/UserProfile';
+import Loader from '@/components/Loader';
 
 const UserPage = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const UserPage = () => {
     }
   }, [id]);
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return <Loader />;
 
   return <UserProfile user={user} />;
 };

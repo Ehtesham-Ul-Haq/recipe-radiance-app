@@ -8,7 +8,7 @@ export default requireAuth(async (req, res) => {
   await dbConnect();
   if (req.method === 'POST') {
     // Code to add a new recipe
-    const { name, description, category, image, ingredients, instructions, userId } = req.body;
+    const { name, description, category, image, ingredients, instructions } = req.body;
     console.log('Authenticated User:', req.user);
    
     try {
@@ -19,7 +19,7 @@ export default requireAuth(async (req, res) => {
       image,
       ingredients, 
       instructions,
-      user: userId
+      user: req.user
     });
     await newRecipe.save();
     res.status(201).json({ success: true, data: newRecipe });

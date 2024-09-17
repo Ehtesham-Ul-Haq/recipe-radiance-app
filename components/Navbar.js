@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaHome, FaPlus, FaList, FaGlobe, FaUser, FaSearch, FaBars, FaTimes, FaPepperHot } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,25 @@ const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+const router = useRouter();
 
+const [userId, setUserId] = useState(null); 
+
+
+useEffect(() => {
+  // Check if the user is logged in
+  const token = localStorage.getItem('token');
+  const loggedInUser = JSON.parse(localStorage.getItem('user')); // Retrieve logged-in user from localStorage
+  if (token) {
+    setIsLoggedIn(true);
+  } else {
+    setIsLoggedIn(false);
+  }
+
+  if (loggedInUser) {
+    setUserId(loggedInUser._id);
+  }
+}, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,6 +44,10 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleUserDropdown = () => setShowUserDropdown(!showUserDropdown);
+
+  // Simulate login (replace with actual login check in real use case)
+  const handleLogin = () => setIsLoggedIn(!isLoggedIn);
+
 
   useEffect(() => {
   
@@ -71,6 +94,13 @@ useEffect(() => {
 }, [searchQuery]);
 
 
+
+const handleLogout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  router.push('/login'); // Redirect to login page after logout
+};
+
   const navItems = [
     { name: 'Home', link: '/', icon: <FaHome /> },
     { name: 'All Recipes', link: '/allrecipes', icon: <FaPepperHot /> },
@@ -84,7 +114,7 @@ useEffect(() => {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      <Link href={item.link ? item.link : `/${item.name.toLowerCase()}`} className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors duration-200">
+      <Link href={item.link ? item.link : `/${item.name.toLowerCase()}`} className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-purple-900 transition-colors duration-200">
         {item.icon}
         <span className="ml-2">{item.name}</span>
       </Link>
@@ -98,13 +128,14 @@ useEffect(() => {
         >
           {item.dropdown.map((subItem) => (
             <li key={subItem}>
-              <Link href={`/categories/${subItem.toLowerCase()}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 z-50">{subItem}</Link>
+              <Link href={`/categories/${subItem}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-900 z-50">{subItem}</Link>
             </li>
           ))}
         </motion.ul>
       )}
     </motion.li>
   );
+
 
   return (
     <nav className="bg-white md:sticky md:top-0 md:z-50 shadow-lg">
@@ -136,30 +167,24 @@ useEffect(() => {
             </div>
             {isLoggedIn ? (
               <div className="relative">
-                <button
-                  onClick={toggleUserDropdown}
-                  className="flex items-center space-x-2 text-gray-700 hover:text-purple-600 focus:outline-none"
-                >
+                <button onClick={toggleUserDropdown} className="flex items-center space-x-2 appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300">
                   <FaUser />
                   <span>Profile</span>
                 </button>
                 <AnimatePresence>
                   {showUserDropdown && (
-                    <motion.div
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Link href="/profile-edit" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Edit Profile</Link>
-                      <Link href="/logout" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Logout</Link>
+                    <motion.div className="absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-50"
+                      initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
+                      <Link href={`/user/${userId}`} className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50">Visit Profile</Link>
+                      <span onClick={handleLogout} className="block cursor-pointer px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50">Logout</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             ) : (
-              <Link href="/login" className="appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">Login</Link>
+              <Link href="/login" className="appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                Login
+              </Link>
             )}
             <div className="relative">
               <FaSearch className="text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -182,13 +207,13 @@ useEffect(() => {
                     
                     <ul>
                       {searchResults.map((result) => (
-                        <li key={result._id} className="p-3 text-purple-950 hover:text-white hover:bg-purple-950">
+                        <li key={result._id} className="p-3 text-purple-950 rounded-md hover:text-white hover:bg-purple-950">
                           <Link href={`/recipe/${result._id}`} className="block">{result.name}</Link>
                         </li>
                       ))}
                     </ul>
                   </motion.div>
-                ) : (
+                ) : searchQuery ? ( // Only show "No recipes with this name" if searchQuery is not empty
                   <motion.div
                     className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg z-50 p-3 text-center text-purple-950"
                     initial={{ opacity: 0, height: 0 }}
@@ -198,14 +223,14 @@ useEffect(() => {
                   >
                     No recipes with this name
                   </motion.div>
-                )}
+                ) : null}
               </AnimatePresence>
             </div>
           </div>
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-purple-600 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-purple-900 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
             >
               {isOpen ? <FaTimes /> : <FaBars />}
             </button>
@@ -226,7 +251,7 @@ useEffect(() => {
                 <a
                   key={item.name}
                   href={item.link ? item.link : `/${item.name.toLowerCase()}`}
-                  className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+                  className="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-900 hover:bg-purple-50"
                 >
                   {item.icon}
                   <span className="ml-2">{item.name}</span>
@@ -239,10 +264,14 @@ useEffect(() => {
                   <option>FR</option>
                 </select>
                 {isLoggedIn ? (
-                  <button className="text-gray-700 hover:text-purple-600 font-medium">Profile</button>
-                ) : (
-                  <Link href="/login" className="appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">Login</Link>
-                )}
+              <button onClick={handleLogin} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">
+                Logout
+              </button>
+            ) : (
+              <Link href="/login" className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">
+                Login
+              </Link>
+            )}
               </div>
               <div className="relative px-3 py-2">
                 <FaSearch className="text-gray-500 absolute left-6 top-1/2 transform -translate-y-1/2" />

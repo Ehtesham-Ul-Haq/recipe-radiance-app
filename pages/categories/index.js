@@ -3,34 +3,6 @@ import CategoryCard from '@/components/CategoryCard';
 import Link from 'next/link';
 
 
-const generateCategoryImage = async (category) => {
-  try {
-    const response = await fetch("https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_GPT_APIKEY_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ inputs: `Generate an image for the indian recipe category: ${category}`}),
-    });
-
-   
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-   // Convert the response to a Blob
-   const blob = await response.blob();
-   // Create a URL for the Blob
-   const imageUrl = URL.createObjectURL(blob);
-   return imageUrl;
- } catch (error) {
-   console.error('Error generating image:', error);
-   return "/img/logo-img-2.png"; // Fallback image URL
- }
-};
-
-
 
 
 
@@ -69,6 +41,34 @@ const Categories = () => {
 
     fetchCategories();
   }, []);
+
+
+  const generateCategoryImage = async (category) => {
+    try {
+      const response = await fetch("https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_GPT_APIKEY_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputs: `Generate an image for the indian recipe category: ${category}`}),
+      });
+  
+     
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+     // Convert the response to a Blob
+     const blob = await response.blob();
+     // Create a URL for the Blob
+     const imageUrl = URL.createObjectURL(blob);
+     return imageUrl;
+   } catch (error) {
+     console.error('Error generating image:', error);
+     return "/img/logo-img-2.png"; // Fallback image URL
+   }
+  };
 
   return (
     <div className="container mx-auto py-12 px-4">

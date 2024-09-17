@@ -2,8 +2,8 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaFacebook, FaTwitter, FaPinterest, FaStar, FaWhatsapp, FaInstagramSquare } from 'react-icons/fa';
-import { BiCategory } from "react-icons/bi";
+import { FaFacebook, FaTwitter, FaPinterest, FaStar, FaWhatsapp, FaInstagramSquare, FaHeart } from 'react-icons/fa';
+import { BiCategory, BiUser } from "react-icons/bi";
 import Link from 'next/link';
 import Loader from '@/components/Loader';
 
@@ -17,15 +17,36 @@ const RecipePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [isFavorited, setIsFavorited] = useState(false); // To track if the recipe is favorited
+  const [favoriteError, setFavoriteError] = useState(null); // To display errors related to favorite actions
+
+
   useEffect(() => {
     if (id) {
       setLoading(true);
       const fetchRecipe = async () => {
         try {
+          const token = localStorage.getItem('token'); // Get token from localStorage
+
           const res = await axios.get(`/api/recipes/${id}`);
           setRecipe(res.data.data);
+
+           // Fetch user's favorite recipes and check if the current recipe is favorited
+           const userFavoritesRes = await axios.get(`/api/users/favorites`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Pass token to get user's favorites
+            },
+          });
+
+          const favoriteRecipes = userFavoritesRes.data.favoritesRecipes;
+          // Check if the current recipe is in the user's favorite list
+          setIsFavorited(favoriteRecipes.some(fav => fav._id === id));
+
         } catch (error) {
           console.error(error);
+        }
+        finally {
+          setLoading(false);
         }
       };
       fetchRecipe();
@@ -79,6 +100,30 @@ const RecipePage = () => {
     window.open(shareUrl, '_blank');
   };
 
+
+  const handleFavoriteClick = async () => {
+    const token = localStorage.getItem('token'); // or wherever you store the token
+  
+    try {
+      const response = await axios.post(
+        `/api/users/favorites?recipeId=${id}`,  // Send recipeId in the query
+        {},  // No need for a request body, since recipeId is in query
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Pass the token in the headers
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        setIsFavorited(true);  // Update state to show recipe is favorited
+      }
+    } catch (error) {
+      setFavoriteError('Failed to add to favorites');
+      console.error(error);
+    }
+  };
+  
   if (!recipe) return <Loader />;
 
   return (
@@ -93,9 +138,26 @@ const RecipePage = () => {
         <>
     <div className="mb-8">
       <img src={recipe.image} alt={recipe.name} className="w-full h-96 object-cover rounded-lg mb-4" />
+      <div className='flex items-center justify-between'>
       <h1 className="text-4xl font-bold mb-2 capitalize">{recipe.name}</h1>
+{/* Save to Favorites */}
+<div className="flex items-center gap-4 mb-4">
+              <button
+                onClick={handleFavoriteClick}
+                className={`text-xl ${isFavorited ? 'text-red-600' : 'text-gray-400'} hover:text-red-600 transition-colors duration-200`}
+                title="Save to Favorites"
+              >
+                <FaHeart size={24} />
+              </button>
+              {favoriteError && <p className="text-red-600">{favoriteError}</p>}
+            </div>
+      </div>
       <p className="text-gray-600 mb-4 capitalize">{recipe.description}</p>
       <p className="text-gray-600 mb-4 capitalize flex items-center gap-4 font-semibold">Category <BiCategory size={24} /> <Link href={`/category/${recipe.category}`} className='hover:text-purple-700 hover:underline transition-colors duration-200'>{recipe.category}</Link></p>
+      <p className="text-gray-600 mb-4 capitalize flex items-center gap-4 font-semibold">Author <BiUser size={24} /> <Link href={`/user/${recipe.user._id}`} className='hover:text-purple-700 hover:underline transition-colors duration-200'>{recipe.user.name}</Link></p>
+
+
+
       <div className="flex space-x-4 mb-4">
       <button
         className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
