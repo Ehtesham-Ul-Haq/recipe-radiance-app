@@ -1,16 +1,27 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import "@/styles/globals.css";
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }) {
-  return <>
-  <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-  <Header />
-  <Component {...pageProps} />;
-  <Footer />
-  </GoogleOAuthProvider>
-  </>
+  return (
+    <>
+      <Header />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <Component {...pageProps} />;
+      <Footer />
+    </>
+  );
 }
-

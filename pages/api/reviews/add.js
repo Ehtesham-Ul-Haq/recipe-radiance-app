@@ -1,51 +1,62 @@
-//  adding a new review
-
 import dbConnect from '../../../utils/dbConnect';
 import Recipe from '../../../models/Recipe';
 import Review from '../../../models/Review';
 import requireAuth from '../../../middleware/requireAuth';
 
-export default async function handler(req, res) {
-  const { method } = req;
-
+export default requireAuth(async (req, res) => {
+  // Ensure database connection
   await dbConnect();
+  const { method } = req;
+  const { recipeId } = req.query;
+
 
   switch (method) {
     case 'POST':
-      requireAuth(async (req, res) => {
-        try {
-          const { recipeId, rating, comment } = req.body;
+      try {
+        // Protect the route with authentication middleware
 
-          // Check if the recipe exists
-          const recipe = await Recipe.findById(recipeId);
-          if (!recipe) {
-            return res.status(404).json({ success: false, message: 'Recipe not found' });
-          }
+        const { rating, comment } = req.body;
 
-          // Create new review
-          const newReview = new Review({
-            userId: req.user, // Extracted from JWT token
-            // name: req.user.name,
-            rating,
-            comment,
-            recipeId, // Link review to the recipe
-          });
-
-          const savedReview = await newReview.save();
-
-          // Optionally, you can update the recipe with the review
-          recipe.reviews.push(savedReview._id);
-          await recipe.save();
-
-          res.status(201).json({ success: true, data: savedReview });
-        } catch (error) {
-          res.status(400).json({ success: false, message: error.message });
+        // Ensure rating and comment are provided
+        if (!rating || !comment) {
+          return res.status(400).json({ success: false, message: 'Rating and comment are required' });
         }
-      })(req, res);
+
+        // Check if the recipe exists
+        const recipe = await Recipe.findById(recipeId);
+        if (!recipe) {
+          return res.status(404).json({ success: false, message: 'Recipe not found' });
+        }
+
+        // Check if the user already reviewed the recipe
+        const existingReview = await Review.findOne({ userId: req.user, recipeId: recipeId });
+        if (existingReview) {
+          return res.status(400).json({ success: false, message: 'You have already reviewed this recipe' });
+        }
+        
+
+        // Create new review
+        const newReview = new Review({
+          userId: req.user, // Assuming `req.user` contains the authenticated user's info
+          rating,
+          comment,
+          recipeId, // Link review to the recipe
+        });
+
+        const savedReview = await newReview.save();
+
+        // Add review ID to the recipe's reviews array
+        recipe.reviews.push(savedReview._id);
+        await recipe.save();
+
+        res.status(201).json({ success: true, data: savedReview });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+      }
       break;
 
     default:
-      res.status(400).json({ success: false, message: 'Invalid request method' });
+      res.status(405).json({ success: false, message: 'Method not allowed' });
       break;
   }
-}
+});

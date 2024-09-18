@@ -1,9 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Loader from './Loader';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const RecipeForm = ({ initialRecipe = {} }) => {
   const [image, setImage] = useState(initialRecipe.image || '');
@@ -17,7 +20,20 @@ const RecipeForm = ({ initialRecipe = {} }) => {
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
- 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // toast.info('Login to Create a Recipe!');
+      if (!toast.isActive('login-toast')) { // Use a unique toast ID
+        toast.info('Login to Create a Recipe!', {
+          toastId: 'login-toast', // Set a unique toastId
+        });
+     
+      router.push('/login');
+    }
+  }
+  }, [router]);
 
   const handleIngredientChange = (index, value) => {
     const newIngredients = [...ingredients];
@@ -89,10 +105,19 @@ const RecipeForm = ({ initialRecipe = {} }) => {
   
         if (initialRecipe._id) {
           await axios.put(`/api/recipes/${initialRecipe._id}`, recipeData, config);
-          console.log('Recipe updated successfully');
+
+          if (!toast.isActive('updaterecipe-toast')) { // Use a unique toast ID
+            toast.success('Successfully Updated Recipe!', {
+              toastId: 'updaterecipe-toast', // Set a unique toastId
+            });
+          }
         } else {
           await axios.post('/api/recipes/add', recipeData, config);
-          console.log('Recipe added successfully');
+          if (!toast.isActive('updaterecipe-toast')) { // Use a unique toast ID
+            toast.success('Successfully Created Recipe!', {
+              toastId: 'updaterecipe-toast', // Set a unique toastId
+            });
+          }
         }
   
         // Redirect or show success message
@@ -101,6 +126,11 @@ const RecipeForm = ({ initialRecipe = {} }) => {
       } catch (error) {
         console.error(error);
         setError('Failed to submit recipe');
+        if (!toast.isActive('failrecipe-toast')) { // Use a unique toast ID
+          toast.error('Failed to Submit Recipe!', {
+            toastId: 'failrecipe-toast', // Set a unique toastId
+          });
+        }
       } finally {
         setLoading(false); // Stop loader
       }

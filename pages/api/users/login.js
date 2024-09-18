@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const { email, password, token, type } = req.body;
 
     try {
-      if (type === 'facebook') {
+      if (type === 'recipeRadiance') {
         // Standard login
         if (!email || !password) return res.status(400).json({ success: false, error: 'Email and password required' });
 

@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FaKey } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const ChangePassword = () => {
   const router = useRouter();
@@ -19,6 +20,11 @@ const ChangePassword = () => {
     
     if (!token) {
       router.push('/login'); // Redirect to login page if no token is found
+      if (!toast.isActive('passwordlogin-toast')) { // Use a unique toast ID
+        toast.info('Login to Authenticate!', {
+          toastId: 'passwordlogin-toast', // Set a unique toastId
+        });
+      }
     }
 
     // Check if the logged-in user's ID matches the ID in the query
@@ -32,6 +38,11 @@ const ChangePassword = () => {
 
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
+      if (!toast.isActive('passwordmiss-toast')) { // Use a unique toast ID
+        toast.error('Login to Authenticate!', {
+          toastId: 'passwordmiss-toast', // Set a unique toastId
+        });
+      }
       return;
     }
 
@@ -48,13 +59,28 @@ const ChangePassword = () => {
 
       if (response.ok) {
         setSuccess('Password changed successfully!');
+        if (!toast.isActive('passwordok-toast')) { // Use a unique toast ID
+          toast.success('Your Password is Changed Successfully!', {
+            toastId: 'passwordok-toast', // Set a unique toastId
+          });
+        }
         router.push(`/user/${id}`);
         setError('');
       } else {
         setError('Failed to change password');
+        if (!toast.isActive('passwordchangeerror-toast')) { // Use a unique toast ID
+          toast.error('Failed to change Password!', {
+            toastId: 'passwordchangeerror-toast', // Set a unique toastId
+          });
+        }
       }
     } catch (error) {
       console.error('Error changing password:', error);
+      if (!toast.isActive('passwordcatcherror-toast')) { // Use a unique toast ID
+        toast.error('Failed to change Password!', {
+          toastId: 'passwordcatcherror-toast', // Set a unique toastId
+        });
+      }
       setError('An error occurred');
     }
   };

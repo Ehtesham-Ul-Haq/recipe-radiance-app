@@ -27,7 +27,6 @@ const Footer = () => {
           .slice(0, 5);
 
         setTopFiveRecipes(topFive); // Set the sorted recipes
-        console.log("Top 5 Recipes:", topFive);
       } catch (error) {
         console.error("Error fetching recipes:", error.message);
       }
@@ -38,7 +37,6 @@ const Footer = () => {
       try {
         const res = await fetch("/api/recipes"); // Adjust API route as needed
         const data = await res.json();
-        console.log("data:", data);
 
         const allCategories = data.data.map((recipe) => recipe.category);
         const uniqueCategories = [...new Set(allCategories)]; // Set removes duplicates

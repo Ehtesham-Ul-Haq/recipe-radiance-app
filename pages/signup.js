@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -23,10 +24,20 @@ export default function Signup() {
         type: 'recipeRadiance',
       });
       setMessage('Signup successful!');
+      if (!toast.isActive('signupsuccessfully-toast')) { // Use a unique toast ID
+        toast.success("Your Signup is Successfull! Now Login to Move Further!", {
+          toastId: 'signupsuccessfully-toast', // Set a unique toastId
+        });
+      }
                     // Optionally redirect the user after login
        router.push('/login'); // Replace with your desired page
     } catch (error) {
       setMessage('Signup failed. Please try again.');
+      if (!toast.isActive('signuperrorc-toast')) { // Use a unique toast ID
+        toast.error("Your Signup is Failed! Try Again!", {
+          toastId: 'signuperrorc-toast', // Set a unique toastId
+        });
+      }
     }
   };
 

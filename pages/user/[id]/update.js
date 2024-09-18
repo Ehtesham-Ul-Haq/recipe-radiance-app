@@ -2,6 +2,7 @@
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const UpdateUserProfile = () => {
   const router = useRouter();
@@ -20,6 +21,11 @@ const UpdateUserProfile = () => {
     if (loggedInUser?._id !== id) {
       // If logged-in user ID does not match the profile ID
       setErrorMessage("You don't have access to update someone else's profile.");
+      if (!toast.isActive('access-toast')) { // Use a unique toast ID
+        toast.error("You don't have access to update someone else's profile!", {
+          toastId: 'access-toast', // Set a unique toastId
+        });
+      }
       setLoading(false);
       return;
     }
@@ -40,24 +46,6 @@ const UpdateUserProfile = () => {
       fetchUserProfile();
     }
   }, [id]);
-
-  // useEffect(() => {
-  //   if (id) {
-  //     const fetchUserProfile = async () => {
-  //       try {
-  //         const response = await fetch(`/api/users/${id}`);
-  //         const data = await response.json();
-  //         setUser(data.data);
-  //         setImagePreview(data.data.image); // Set initial image preview
-  //         setLoading(false);
-  //       } catch (error) {
-  //         console.error('Error fetching user profile:', error);
-  //       }
-  //     };
-
-  //     fetchUserProfile();
-  //   }
-  // }, [id]);
 
   const handleChange = async (e) => {
     const { name, value, type, files } = e.target;
@@ -89,13 +77,26 @@ const UpdateUserProfile = () => {
       });
 
       if (response.ok) {
-        alert('Profile updated successfully!');
+        if (!toast.isActive('profileupdate-toast')) { // Use a unique toast ID
+          toast.success("Profile updated successfully!", {
+            toastId: 'profileupdate-toast', // Set a unique toastId
+          });
+        }
         router.push(`/user/${id}`); // Redirect to user profile page
       } else {
-        alert('Failed to update profile');
+        if (!toast.isActive('profileupdateerror-toast')) { // Use a unique toast ID
+          toast.error("Failed to Update Profile!", {
+            toastId: 'profileupdateerror-toast', // Set a unique toastId
+          });
+        }
       }
     } catch (error) {
       console.error('Error updating profile:', error);
+      if (!toast.isActive('tryagain-toast')) { // Use a unique toast ID
+        toast.error("Try Again!", {
+          toastId: 'tryagain-toast', // Set a unique toastId
+        });
+      }
     }
   };
 

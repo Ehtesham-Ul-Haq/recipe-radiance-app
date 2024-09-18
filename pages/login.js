@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function Login() {
 
   const [imageUrl, setImageUrl] = useState('/img/logo-img-2.png'); // Default fallback image
   const router = useRouter();
+
   const handleRecipeRadianceLogin = async (e) => {
     e.preventDefault();
     try {
@@ -26,10 +28,21 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(userdata)); // Store the user data if needed
   
       setMessage('Login successful!');
+      if (!toast.isActive('loginsuccessfully-toast')) { // Use a unique toast ID
+        toast.success("Your Login is Successfull!", {
+          toastId: 'loginsuccessfully-toast', // Set a unique toastId
+        });
+      }
+
       // Optionally redirect the user after login
    router.push('/'); // Replace with your desired page
     } catch (error) {
       setMessage('Login failed. Please try again.');
+      if (!toast.isActive('loginerrorc-toast')) { // Use a unique toast ID
+        toast.error("Your Login is Failed! Try Again!", {
+          toastId: 'loginerrorc-toast', // Set a unique toastId
+        });
+      }
     }
   };
 
