@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, token, userdata: user });
       }
     } catch (error) {
-      console.error(error);
+      console.error('Error during login:', error); // This will log more details about the error
       return res.status(400).json({ success: false, error: 'An error occurred' });
     }
   } else {

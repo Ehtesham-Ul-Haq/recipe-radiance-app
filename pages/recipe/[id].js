@@ -256,7 +256,7 @@ const RecipePage = () => {
             <p className="text-gray-600 mb-4 capitalize flex items-center gap-4 font-semibold">
               Category <BiCategory size={24} />{" "}
               <Link
-                href={`/category/${recipe.category}`}
+                href={`/categories/${recipe.category}`}
                 className="hover:text-purple-700 hover:underline transition-colors duration-200"
               >
                 {recipe.category}

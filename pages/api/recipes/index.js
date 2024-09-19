@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   await dbConnect();
   console.log('Database connected successfully'); // Ensure DB connection
   const { method } = req;
-  const { sortBy, category, limit = 12, page = 1, search } = req.query;
+  const { sortBy, category, limit = 12, page = 1, search, userId } = req.query;
 
   switch (method) {
     case 'GET':
@@ -21,6 +21,10 @@ export default async function handler(req, res) {
         if (search) {
           // Add search filter to query to match name
           query.name = { $regex: search, $options: 'i' }; // Case-insensitive search
+        }
+
+        if (userId) {
+          query.user = userId; // Filter recipes by user ID if provided
         }
 
         const skip = (page - 1) * limit; // Calculate how many items to skip based on page and limit

@@ -49,9 +49,8 @@ const UserProfile = ({ user }) => {
       
       {hasAccess && <Link href={`/user/${user._id}/update`} className=" w-40 mx-auto font-semibold text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white py-2 px-4 rounded-tl-3xl rounded-br-3xl flex items-center"><BiPencil className='mr-4' />Edit Profile</Link>}
       {hasAccess && <Link href={`/user/${user._id}/changepassword`} className="w-48 mx-auto font-medium text-sm text-purple-950 border border-purple-950 hover:bg-purple-950 hover:text-white py-1 px-2 mt-4 rounded-tl-3xl rounded-br-3xl flex items-center"><BiSolidKey className='mr-4' />Change Password</Link>}
-      <Link href={`/user/${user._id}/favorites`} className="w-full md:w-80 mx-auto mt-4 font-semibold text-red-700 border border-red-700 hover:bg-red-700 hover:text-white py-2 px-4 rounded-tl-3xl rounded-br-3xl flex items-center capitalize"><BiHeart className='mr-4' />{user.name}'s Favorite Recipes</Link>
+      {hasAccess && <Link href={`/user/${user._id}/favorites`} className="w-full md:w-80 mx-auto mt-4 font-semibold text-red-700 border border-red-700 hover:bg-red-700 hover:text-white py-2 px-4 rounded-tl-3xl rounded-br-3xl flex items-center capitalize"><BiHeart className='mr-4' />{user.name}'s Favorite Recipes</Link>}
       </div>
-    
     </div>
   );
 };

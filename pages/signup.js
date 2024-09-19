@@ -4,6 +4,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -12,10 +13,17 @@ export default function Signup() {
     password: '',
   });
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const [imageUrl, setImageUrl] = useState('/img/logo-img-2.png'); // Default fallback image
   const router = useRouter();
 
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  
   const handleRecipeRadianceSignup = async (e) => {
     e.preventDefault();
     try {
@@ -107,14 +115,25 @@ export default function Signup() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-950 focus:border-transparent"
             />
+            <div className="relative">
 
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-950 focus:border-transparent"
             />
+
+<button
+                type="button"
+                onClick={togglePasswordVisibility}
+                title={showPassword ? "Hide Password" : "Show Password"}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
 
             <button
               type="submit"

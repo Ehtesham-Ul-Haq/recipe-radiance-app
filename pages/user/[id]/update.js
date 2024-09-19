@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const UpdateUserProfile = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [user, setUser] = useState({ name: '', email: '', image: '' });
+  const [user, setUser] = useState({ name: '', email: '', image: '', password: '' });
   const [loading, setLoading] = useState(true);
   const [imagePreview, setImagePreview] = useState('');
 

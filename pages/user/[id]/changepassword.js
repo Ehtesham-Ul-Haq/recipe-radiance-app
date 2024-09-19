@@ -39,7 +39,7 @@ const ChangePassword = () => {
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
       if (!toast.isActive('passwordmiss-toast')) { // Use a unique toast ID
-        toast.error('Login to Authenticate!', {
+        toast.error('Passwords do not match!', {
           toastId: 'passwordmiss-toast', // Set a unique toastId
         });
       }
