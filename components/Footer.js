@@ -13,6 +13,9 @@ import {
 const Footer = () => {
   const [topFiveRecipes, setTopFiveRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Fetch data using useEffect
   useEffect(() => {
@@ -50,6 +53,25 @@ const Footer = () => {
     fetchCategories();
   }, []); // Empty dependency array to fetch on mount
 
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const res = await axios.post("/api/subscribe", { email });
+      if (res.status === 200) {
+        setMessage("Thank you for subscribing!");
+        setEmail(""); // Clear email input
+      }
+    } catch (error) {
+      setMessage("Error subscribing. Please try again.");
+      console.error("Error subscribing:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <header className="bg-white shadow-md">
@@ -74,25 +96,29 @@ const Footer = () => {
             <p className="text-sm text-gray-600 mb-3">
               Stay updated with the latest recipes and news!
             </p>
-            <form className="flex">
+            <form className="flex" onSubmit={handleSubscribe}>
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="flex-grow px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300"
+                required
               />
               <button
                 type="submit"
-                className="bg-purple-950 text-white px-4 py-2 rounded-r-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-300"
+                className={`bg-purple-950 text-white px-4 py-2 rounded-r-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={loading}
               >
-                Subscribe
+                {loading ? "Subscribing..." : "Subscribe"}
               </button>
             </form>
+            {message && <p className="mt-2 text-sm text-gray-600">{message}</p>}
           </div>
         </div>
       </header>
 
       <main className="flex-grow container mx-auto px-4 py-8">
-        {/* Main content goes here */}
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Welcome to Recipe Radiance
         </h2>

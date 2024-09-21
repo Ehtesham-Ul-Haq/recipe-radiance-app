@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,18 @@ const Navbar = () => {
   const router = useRouter();
 
   const [userId, setUserId] = useState(null);
+
+  const [isOpenLang, setIsOpenLang] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("EN");
+
+  const toggleDropdown = () => {
+    setIsOpenLang(!isOpenLang);
+  };
+
+  const selectOption = (option) => {
+    setSelectedOption(option);
+    setIsOpenLang(false); // Close the dropdown after selecting an option
+  };
 
   // Check the login status from localStorage
   const checkLoginStatus = () => {
@@ -166,7 +179,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="bg-white md:sticky md:top-0 md:z-50 shadow-lg">
+    <nav className="bg-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-around h-24">
           <div className="flex items-center">
@@ -186,14 +199,119 @@ const Navbar = () => {
                 <NavItem key={item.name} item={item} />
               ))}
             </ul>
+
             <div className="relative cursor-pointer">
-              <FaGlobe className="text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2 cursor-pointer" />
-              <select className="appearance-none bg-transparent border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 cursor-pointer">
-                <option>EN</option>
-                <option>ES</option>
-                <option>FR</option>
-              </select>
+              {/* Selected option with Globe icon */}
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center space-x-2 appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
+              >
+                <FaGlobe />
+                <span>{selectedOption.slice(0, 2)}</span>
+                {/* Dropdown arrow */}
+                {isOpenLang ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+              </button>
+
+              {/* Options dropdown */}
+
+              <AnimatePresence>
+                {isOpenLang && (
+                  <motion.div
+                    className="absolute left-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 z-50"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <span
+                      onClick={() => selectOption("ENGLISH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      ENGLISH
+                    </span>
+                    <span
+                      onClick={() => selectOption("SPANISH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      SPANISH
+                    </span>
+                    <span
+                      onClick={() => selectOption("FRENCH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      FRENCH
+                    </span>
+                    <span
+                      onClick={() => selectOption("GERMAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      GERMAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("ITALIAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      ITALIAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("PORTUGUESE")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      PORTUGUESE
+                    </span>
+                    <span
+                      onClick={() => selectOption("RUSSIAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      RUSSIAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("CHINESE")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      CHINESE
+                    </span>
+                    <span
+                      onClick={() => selectOption("JAPANESE")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      JAPANESE
+                    </span>
+                    <span
+                      onClick={() => selectOption("KOREAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      KOREAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("ARABIC")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      ARABIC
+                    </span>
+                    <span
+                      onClick={() => selectOption("HINDI")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      HINDI
+                    </span>
+                    <span
+                      onClick={() => selectOption("TURKISH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      TURKISH
+                    </span>
+                    <span
+                      onClick={() => selectOption("URDU")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      URDU
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
+
             {isLoggedIn ? (
               <div className="relative">
                 <button
@@ -398,14 +516,117 @@ const Navbar = () => {
                   </Link>
                 )}
               </div>
-              <div className="px-3 py-2 relative">
-                <FaGlobe className="text-gray-800 absolute left-6 top-1/2 transform -translate-y-1/2 cursor-pointer" />
-                <select className="appearance-none bg-transparent border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 cursor-pointer">
-                  <option>EN</option>
-                  <option>ES</option>
-                  <option>FR</option>
-                </select>
-              </div>
+              <div className="relative cursor-pointer px-3 py-2">
+              {/* Selected option with Globe icon */}
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center space-x-2 appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
+              >
+                <FaGlobe />
+                <span>{selectedOption.slice(0, 2)}</span>
+                {/* Dropdown arrow */}
+                {isOpenLang ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+              </button>
+
+              {/* Options dropdown */}
+
+              <AnimatePresence>
+                {isOpenLang && (
+                  <motion.div
+                    className="absolute left-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 z-50"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <span
+                      onClick={() => selectOption("ENGLISH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      ENGLISH
+                    </span>
+                    <span
+                      onClick={() => selectOption("SPANISH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      SPANISH
+                    </span>
+                    <span
+                      onClick={() => selectOption("FRENCH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      FRENCH
+                    </span>
+                    <span
+                      onClick={() => selectOption("GERMAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      GERMAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("ITALIAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      ITALIAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("PORTUGUESE")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      PORTUGUESE
+                    </span>
+                    <span
+                      onClick={() => selectOption("RUSSIAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      RUSSIAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("CHINESE")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      CHINESE
+                    </span>
+                    <span
+                      onClick={() => selectOption("JAPANESE")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      JAPANESE
+                    </span>
+                    <span
+                      onClick={() => selectOption("KOREAN")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      KOREAN
+                    </span>
+                    <span
+                      onClick={() => selectOption("ARABIC")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      ARABIC
+                    </span>
+                    <span
+                      onClick={() => selectOption("HINDI")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      HINDI
+                    </span>
+                    <span
+                      onClick={() => selectOption("TURKISH")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      TURKISH
+                    </span>
+                    <span
+                      onClick={() => selectOption("URDU")}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                    >
+                      URDU
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
               <div className="relative px-3 py-2">
                 <FaSearch className="text-gray-500 absolute left-6 top-1/2 transform -translate-y-1/2" />
                 <input
