@@ -1,9 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
+import Head from 'next/head';
 import React from 'react';
 import { FaUtensils, FaUsers, FaLightbulb } from 'react-icons/fa';
 
 const AboutPage = () => {
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>About us - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="bg-purple-50 min-h-screen">
       {/* Hero Section */}
       <div className="relative h-96 bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')"}}>
@@ -66,6 +77,7 @@ const AboutPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

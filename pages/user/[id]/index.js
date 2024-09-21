@@ -4,6 +4,7 @@ import axios from 'axios';
 import UserProfile from '@/components/UserProfile';
 import Loader from '@/components/Loader';
 import RecipeCard from '@/components/RecipeCard';
+import Head from 'next/head';
 
 const UserPage = () => {
   const router = useRouter();
@@ -54,9 +55,18 @@ const UserPage = () => {
   }
 
   return <>
+    {/* Meta tags and page title */}
+    <Head>
+    <title>{user.name.replace(/\b\w/g, char => char.toUpperCase())} - Recipe Radiance Profile</title>
+    <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
   <UserProfile user={user} />;
-  <div className="max-w-4xl mx-auto p-4 shadow-inner border rounded-lg">
-      <h1 className="text-3xl font-semibold mb-6 capitalize italic  text-center"><span className='uppercase bg-purple-950 py-1 px-4 text-white rounded-2xl'>Recipes</span> <span className='uppercase bg-purple-950 py-1 px-4 text-white rounded-2xl'>by</span> <span className='uppercase bg-purple-950 py-1 px-4 text-white rounded-2xl'>{user.name}</span></h1>
+  <div className="max-w-4xl mx-auto px-2 py-4 md:p-4 shadow-inner border rounded-lg">
+      <h1 className="text-base md:text-3xl font-semibold mb-6 capitalize italic text-center"><span className='uppercase bg-purple-950 py-1 px-4 text-white rounded-2xl'>Recipes</span> <span className='uppercase bg-purple-950 py-1 px-4 text-white rounded-2xl'>by</span> <span className='uppercase bg-purple-950 py-1 px-4 text-white rounded-2xl'>{user.name}</span></h1>
       {recipes.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {recipes.map((recipe) => (

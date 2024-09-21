@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import RecipeCard from '@/components/RecipeCard';
 import Loader from '@/components/Loader';
+import Head from 'next/head';
 
 const Category = () => {
   const router = useRouter();
@@ -44,6 +45,16 @@ const Category = () => {
   const totalPages = Math.ceil(totalRecipes / RECIPES_PER_PAGE);
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>{category} Recipes - Recipe Radiance</title>
+      <meta
+        name="description"
+        content={`Explore and share a wide range of ${category} recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks.`}
+      />
+      </Head>
+
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8 capitalize">{category} Recipes</h1>
       {loading && (
@@ -69,6 +80,7 @@ const Category = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

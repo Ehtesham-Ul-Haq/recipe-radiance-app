@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import RecipeCard from '@/components/RecipeCard';
 import Loader from '@/components/Loader';
+import Head from 'next/head';
 
 const AllRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -38,6 +39,16 @@ const AllRecipes = () => {
   const totalPages = Math.ceil(totalRecipes / RECIPES_PER_PAGE);
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>All Recipes - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">
         Delicious Recipes
@@ -67,6 +78,7 @@ const AllRecipes = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

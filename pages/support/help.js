@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaQuestion, FaBook, FaUserCircle, FaEnvelope } from 'react-icons/fa';
@@ -6,6 +7,16 @@ const HelpPage = () => {
   const router = useRouter();
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Help - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="bg-purple-50 min-h-screen py-12">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-purple-800 text-center mb-12">Help Center</h1>
@@ -49,6 +60,7 @@ const HelpPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

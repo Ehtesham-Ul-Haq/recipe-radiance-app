@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Head from "next/head";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -41,7 +42,7 @@ export default function Login() {
           toastId: "loginsuccessfully-toast", // Set a unique toastId
         });
       }
-
+      window.dispatchEvent(new Event('storage'));
       // Optionally redirect the user after login
       router.push("/"); // Replace with your desired page
     } catch (error) {
@@ -93,6 +94,16 @@ export default function Login() {
   }, []);
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Login - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Login to Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl bg-purple-100 shadow-lg rounded-lg overflow-hidden">
         {/* Left Image for Big Screens */}
@@ -173,5 +184,6 @@ export default function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -1,10 +1,21 @@
 // pages/user-guide.js
 
+import Head from 'next/head';
 import React from 'react';
 import { FaUser, FaTools, FaCode, FaQuestionCircle } from 'react-icons/fa';
 
 const UserGuide = () => {
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>User Guide - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-12">User Guide</h1>
@@ -45,6 +56,7 @@ const UserGuide = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

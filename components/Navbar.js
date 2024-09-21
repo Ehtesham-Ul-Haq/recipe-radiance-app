@@ -29,19 +29,29 @@ const Navbar = () => {
 
   const [userId, setUserId] = useState(null);
 
-  useEffect(() => {
+  // Check the login status from localStorage
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem("token"); // Assume you store a token in localStorage
+    setIsLoggedIn(!!token); // If token exists, user is logged in
     // Check if the user is logged in
-    const token = localStorage.getItem("token");
     const loggedInUser = JSON.parse(localStorage.getItem("user")); // Retrieve logged-in user from localStorage
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
 
     if (loggedInUser) {
       setUserId(loggedInUser._id);
     }
+  };
+
+  useEffect(() => {
+    // Check login status on component mount
+    checkLoginStatus();
+
+    // Listen for localStorage changes (e.g., login or logout)
+    window.addEventListener("storage", checkLoginStatus);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("storage", checkLoginStatus);
+    };
   }, []);
 
   useEffect(() => {
@@ -101,6 +111,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    window.dispatchEvent(new Event("storage"));
     router.push("/login"); // Redirect to login page after logout
 
     if (!toast.isActive("logout-toast")) {
@@ -324,76 +335,76 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="px-3 py-2">
-              {isLoggedIn ? (
-              <div className="relative">
-                <button
-                  onClick={toggleUserDropdown}
-                  className="flex items-center space-x-2 appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
-                >
-                  <FaUser />
-                  <span>Profile</span>
-                </button>
-                <AnimatePresence>
-                  {showUserDropdown && (
-                    <motion.div
-                      className="absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-50"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
+                {isLoggedIn ? (
+                  <div className="relative">
+                    <button
+                      onClick={toggleUserDropdown}
+                      className="flex items-center space-x-2 appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
                     >
-                      <Link
-                        href={`/user/${userId}`}
-                        className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
-                      >
-                        Visit Profile
-                      </Link>
-                      <Link
-                        href={`/user/${userId}/favorites`}
-                        className="px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50 flex items-center"
-                      >
-                        Favorite
-                        <FaHeart className="text-red-600 mx-2" />
-                        Recipes
-                      </Link>
-                      <Link
-                        href={`/user/${userId}/update`}
-                        className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
-                      >
-                        Update Profile
-                      </Link>
-                      <Link
-                        href={`/user/${userId}/changepassword`}
-                        className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
-                      >
-                        Change Password
-                      </Link>
-                      <span
-                        onClick={handleLogout}
-                        className="block cursor-pointer px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
-                      >
-                        Logout
-                      </span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      <FaUser />
+                      <span>Profile</span>
+                    </button>
+                    <AnimatePresence>
+                      {showUserDropdown && (
+                        <motion.div
+                          className="absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-50"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Link
+                            href={`/user/${userId}`}
+                            className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                          >
+                            Visit Profile
+                          </Link>
+                          <Link
+                            href={`/user/${userId}/favorites`}
+                            className="px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50 flex items-center"
+                          >
+                            Favorite
+                            <FaHeart className="text-red-600 mx-2" />
+                            Recipes
+                          </Link>
+                          <Link
+                            href={`/user/${userId}/update`}
+                            className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                          >
+                            Update Profile
+                          </Link>
+                          <Link
+                            href={`/user/${userId}/changepassword`}
+                            className="block px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                          >
+                            Change Password
+                          </Link>
+                          <span
+                            onClick={handleLogout}
+                            className="block cursor-pointer px-4 py-2 text-sm text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                          >
+                            Logout
+                          </span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
-            ) : (
-              <Link
-                href="/login"
-                className="appearance-none bg-transparent border border-gray-300 rounded-md px-5 py-2 hover:bg-purple-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-              >
-                Login
-              </Link>
-            )}
-            </div>
               <div className="px-3 py-2 relative">
-              <FaGlobe className="text-gray-800 absolute left-6 top-1/2 transform -translate-y-1/2 cursor-pointer" />
-              <select className="appearance-none bg-transparent border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 cursor-pointer">
-                <option>EN</option>
-                <option>ES</option>
-                <option>FR</option>
-              </select>
+                <FaGlobe className="text-gray-800 absolute left-6 top-1/2 transform -translate-y-1/2 cursor-pointer" />
+                <select className="appearance-none bg-transparent border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 cursor-pointer">
+                  <option>EN</option>
+                  <option>ES</option>
+                  <option>FR</option>
+                </select>
               </div>
               <div className="relative px-3 py-2">
                 <FaSearch className="text-gray-500 absolute left-6 top-1/2 transform -translate-y-1/2" />

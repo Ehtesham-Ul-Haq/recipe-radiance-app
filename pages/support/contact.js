@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useState } from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaPinterest, FaWhatsapp } from 'react-icons/fa';
 
@@ -54,6 +55,16 @@ const Contact = () => {
   };
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Contact us - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-12">Contact Us</h1>
@@ -168,6 +179,7 @@ const Contact = () => {
     </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -1,8 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
+import Head from 'next/head';
 import React from 'react';
 
 const PrivacyPolicy = () => {
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>PrivacyPolicy - Recipe Radiance</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="bg-gray-50 min-h-screen py-12 px-4">
       <div className="container mx-auto">
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-8">Privacy Policy</h1>
@@ -61,6 +72,7 @@ const PrivacyPolicy = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

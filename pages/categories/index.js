@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CategoryCard from '@/components/CategoryCard';
 import Link from 'next/link';
+import Head from 'next/head';
 
 
 
@@ -71,6 +72,16 @@ const Categories = () => {
   };
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>All Categories - Recipe Radiance - Share Delicious Recipes</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of Category wise category list and recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Explore by Category</h1>
       <p className='text-gray-400 mb-8'>
@@ -90,6 +101,7 @@ const Categories = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@
 import Loader from '@/components/Loader';
 import RecipeForm from '@/components/RecipeForm';
 import axios from 'axios';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -53,6 +54,16 @@ const UpdateRecipe = () => {
 
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Update {recipe.name} - Recipe Radiance</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className='max-w-4xl mx-auto p-4 bg-white shadow-lg rounded-lg'>
       {!loading && (
         hasAccess ? (<div>
@@ -62,6 +73,7 @@ const UpdateRecipe = () => {
         <p className="text-red-500 text-center">You don't have access to update this user's password.</p>;
       </div>)}
     </div>
+    </>
   );
 }
 

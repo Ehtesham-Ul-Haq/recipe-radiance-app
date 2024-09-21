@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React from 'react';
 
 const faq = () => {
@@ -9,6 +10,16 @@ const faq = () => {
       ];
     
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Frequently asked questions - Recipe Radiance</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="bg-gray-100 min-h-screen py-12">
     <div className="bg-white rounded-lg shadow-md p-8">
           <h2 className="text-3xl text-center font-semibold text-purple-800 mb-6">Frequently Asked Questions</h2>
@@ -30,6 +41,7 @@ const faq = () => {
           </button>
         </div>
         </div>
+        </>
   );
 }
 

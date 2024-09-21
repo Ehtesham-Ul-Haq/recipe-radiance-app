@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loader from '@/components/Loader'; // Assuming you have a Loader component
 import { toast } from 'react-toastify';
+import Head from 'next/head';
 
 const DeleteRecipe = () => {
   const router = useRouter();
@@ -68,6 +69,12 @@ const DeleteRecipe = () => {
   if (loading) return <Loader />;
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Delete {recipe.name} - Recipe Radiance</title>
+      </Head>
+
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-purple-950">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -108,6 +115,7 @@ const DeleteRecipe = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

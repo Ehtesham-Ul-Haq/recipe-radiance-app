@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { FaEnvelope, FaEye, FaEyeSlash, FaUnlockAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import Head from 'next/head';
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -101,6 +102,16 @@ const ResetPassword = () => {
     };
 
   return (
+    <>
+    {/* Meta tags and page title */}
+    <Head>
+      <title>Reset Password - Recipe Radiance</title>
+      <meta
+        name="description"
+        content="Explore and share a wide range of recipes on Recipe Radiance. Find delicious meals, desserts, and more with just a few clicks."
+      />
+      </Head>
+
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-primary to-purple-950">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
         <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Reset Your Password</h1>
@@ -193,6 +204,7 @@ const ResetPassword = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
