@@ -75,12 +75,12 @@ const Footer = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <header className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between">
+        <div className="container flex flex-col items-center justify-between px-4 py-6 mx-auto md:flex-row">
           <div className="flex items-center mb-4 md:mb-0">
             <img
               src="/img/logo-img-nav-1.png"
               alt="Logo"
-              className="h-12 w-12 mr-3"
+              className="w-12 h-12 mr-3"
             />
             <div>
               <h1 className="text-2xl font-bold text-gray-800">
@@ -90,10 +90,10 @@ const Footer = () => {
             </div>
           </div>
           <div className="w-full md:w-1/3">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">
+            <h2 className="mb-2 text-lg font-semibold text-gray-800">
               Subscribe to our newsletter
             </h2>
-            <p className="text-sm text-gray-600 mb-3">
+            <p className="mb-3 text-sm text-gray-600">
               Stay updated with the latest recipes and news!
             </p>
             <form className="flex" onSubmit={handleSubscribe}>
@@ -102,7 +102,7 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="flex-grow px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300"
+                className="flex-grow px-4 py-2 transition duration-300 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
               <button
@@ -118,8 +118,8 @@ const Footer = () => {
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+      <main className="container flex-grow px-4 py-8 mx-auto">
+        <h2 className="mb-6 text-3xl font-bold text-gray-800">
           Welcome to Recipe Radiance
         </h2>
         <p className="text-lg text-gray-600">
@@ -128,17 +128,17 @@ const Footer = () => {
         </p>
       </main>
 
-      <footer className="bg-gray-800 text-white">
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="text-white bg-gray-800">
+        <div className="container px-4 py-8 mx-auto">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Top Recipes</h3>
+              <h3 className="mb-4 text-lg font-semibold">Top Recipes</h3>
               <ul className="space-y-2">
                 {topFiveRecipes.map((recipe) => (
                   <li key={recipe._id}>
                     <Link
                       href={`/recipe/${recipe._id}`}
-                      className="hover:text-purple-400 transition duration-300 capitalize"
+                      className="capitalize transition duration-300 hover:text-purple-400"
                     >
                       {recipe.name}
                     </Link>
@@ -148,13 +148,13 @@ const Footer = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4">Top Categories</h3>
+              <h3 className="mb-4 text-lg font-semibold">Top Categories</h3>
               <ul className="space-y-2">
                 {categories.map((category, index) => (
                   <li key={index}>
                     <Link
                       href={`/categories/${category}`}
-                      className="hover:text-purple-400 transition duration-300 capitalize"
+                      className="capitalize transition duration-300 hover:text-purple-400"
                     >
                       {category}
                     </Link>
@@ -163,12 +163,12 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Support</h3>
+              <h3 className="mb-4 text-lg font-semibold">Support</h3>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href={"/support/faq"}
-                    className="hover:text-purple-400 transition duration-300"
+                    className="transition duration-300 hover:text-purple-400"
                   >
                     FAQ
                   </Link>
@@ -176,7 +176,7 @@ const Footer = () => {
                 <li>
                   <Link
                     href={"/support/contact"}
-                    className="hover:text-purple-400 transition duration-300"
+                    className="transition duration-300 hover:text-purple-400"
                   >
                     Contact Us
                   </Link>
@@ -184,7 +184,7 @@ const Footer = () => {
                 <li>
                   <Link
                     href={"/support/privacy"}
-                    className="hover:text-purple-400 transition duration-300"
+                    className="transition duration-300 hover:text-purple-400"
                   >
                     Privacy Policy
                   </Link>
@@ -192,7 +192,7 @@ const Footer = () => {
                 <li>
                   <Link
                     href={"/support/tos"}
-                    className="hover:text-purple-400 transition duration-300"
+                    className="transition duration-300 hover:text-purple-400"
                   >
                     Terms of Service
                   </Link>
@@ -200,47 +200,47 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Donate</h3>
+              <h3 className="mb-4 text-lg font-semibold">Donate</h3>
               <p className="mb-4">
                 Support our mission to share culinary delights worldwide!
               </p>
-              <button className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-300">
+              <button className="px-4 py-2 text-white transition duration-300 bg-yellow-500 rounded-md hover:bg-yellow-600">
                 Donate Now
               </button>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-400 mb-4 md:mb-0">
+          <div className="flex flex-col items-center justify-between pt-8 mt-8 border-t border-gray-700 md:flex-row">
+            <p className="mb-4 text-sm text-gray-400 md:mb-0">
               &copy; 2024 Recipe Radiance. All rights reserved.
             </p>
             <div className="flex space-x-4">
               <Link
-                href={"/"}
-                className="text-gray-400 hover:text-white transition duration-300"
+                href={"/www.facebook.com"}
+                className="text-gray-400 transition duration-300 hover:text-white"
               >
                 <FaFacebook size={24} />
               </Link>
               <Link
                 href={"/"}
-                className="text-gray-400 hover:text-white transition duration-300"
+                className="text-gray-400 transition duration-300 hover:text-white"
               >
                 <FaTwitter size={24} />
               </Link>
               <Link
                 href={"/"}
-                className="text-gray-400 hover:text-white transition duration-300"
+                className="text-gray-400 transition duration-300 hover:text-white"
               >
                 <FaInstagram size={24} />
               </Link>
               <Link
                 href={"/"}
-                className="text-gray-400 hover:text-white transition duration-300"
+                className="text-gray-400 transition duration-300 hover:text-white"
               >
                 <FaPinterest size={24} />
               </Link>
               <Link
                 href={"/"}
-                className="text-gray-400 hover:text-white transition duration-300"
+                className="text-gray-400 transition duration-300 hover:text-white"
               >
                 <FaWhatsapp size={24} />
               </Link>
