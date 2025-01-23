@@ -2,7 +2,7 @@
 
 Recipe Radiance is a web application designed to help users discover and share a wide variety of recipes. Whether you're a seasoned chef or a home cook, this app provides an extensive collection of recipes to suit all tastes and preferences.
 
-![Top Nav Image](navimage.png)(https://github.com/[Ehtesham-Ul-Haq]/[recipe-radiance-app]/blob/[master]/navimage.png?raw=true)
+![Navigation Image](https://github.com/Ehtesham-Ul-Haq/recipe-radiance-app/raw/master/public/img/navimage.png)
 
 
 ## Table of Contents
