@@ -105,5 +105,6 @@ We welcome contributions from the community! If you'd like to contribute, please
 ---
 
 Thank you for being a part of Recipe Radiance! 🌟
+Give it a ⭐ if you like it!
 
 ---
